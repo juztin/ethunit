@@ -6,10 +6,18 @@ Simple library to convert between Ethereum units.
 _example_
 
 ```golang
+import (
+  ...
+  "github.com/juztin/ethunit"
+  ...
+)
+
 func printTransaction(w io.Writer, tx *types.Transaction) error {
-	value := ConvertInt(tx.Value(), Wei, Ether)
-	cost := ConvertInt(tx.Cost(), Wei, Ether)
-	price := ConvertInt(tx.GasPrice(), Wei, Gwei)
+  // Specify the units
+	value := ethunit.ConvertInt(tx.Value(), Wei, Ether)
+  // Use available helpers
+	cost := ethunit.WeiToEther(tx.Cost())
+	price := ethunit.WeiToGwei(tx.GasPrice())
 	_, err := fmt.Fprintf(w, `  Transaction: %s
          Data: %x
         Value: %s Ether
