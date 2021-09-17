@@ -13,9 +13,9 @@ import (
 )
 
 func printTransaction(w io.Writer, tx *types.Transaction) error {
-  // Specify the units
+	// Specify the units
 	value := ethunit.ConvertInt(tx.Value(), Wei, Ether)
-  // Use available helpers
+	// Use available helpers
 	cost := ethunit.WeiToEther(tx.Cost())
 	price := ethunit.WeiToGwei(tx.GasPrice())
 	_, err := fmt.Fprintf(w, `  Transaction: %s
