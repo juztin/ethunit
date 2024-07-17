@@ -23,15 +23,23 @@ func commafy(s string) string {
 	return string(b)
 }
 
-func String(f *big.Float, u Unit) string {
-	precision := int(u)
-	if precision > 0 {
-		precision--
+func String(d *big.Int, u Unit) string {
+	s := d.String()
+	if len(s) <= int(u) {
+		padded := fmt.Sprintf("0.%s%s", strings.Repeat("0", int(u)-len(s)), s)
+		return strings.TrimRight(padded, "0")
+	} else {
+		decimal := len(s) - int(u)
+		integer := s[:decimal]
+		if decimal < len(s) {
+			mantissa := strings.TrimRight(s[decimal:], "0")
+			if len(mantissa) > 0 {
+				return fmt.Sprintf("%s.%s", commafy(integer), mantissa)
+			} else {
+				return fmt.Sprintf("%s", commafy(integer))
+			}
+		}
+		return commafy(integer)
 	}
-	s := fmt.Sprintf(f.Text('f', precision))
-	i := strings.Index(s, ".")
-	if i == -1 {
-		return commafy(s)
-	}
-	return fmt.Sprintf("%s.%s", commafy(s[:i]), s[i+1:])
+	return s
 }
