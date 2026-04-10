@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	wei    = new(big.Float)
+	wei    = big.NewFloat(1)
 	kwei   = big.NewFloat(math.Pow10(int(Kwei)))
 	mwei   = big.NewFloat(math.Pow10(int(Mwei)))
 	gwei   = big.NewFloat(math.Pow10(int(Gwei)))
@@ -17,6 +17,8 @@ var (
 
 func pow10(u Unit) *big.Float {
 	switch u {
+	case Wei:
+		return wei
 	case Kwei:
 		return kwei
 	case Mwei:
@@ -30,7 +32,7 @@ func pow10(u Unit) *big.Float {
 	case Ether:
 		return ether
 	}
-	return wei
+	return big.NewFloat(math.Pow10(int(u)))
 }
 
 func Float(i *big.Int, u Unit) *big.Float {
